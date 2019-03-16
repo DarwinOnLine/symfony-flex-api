@@ -1,0 +1,11 @@
+# FOSUserBundle
+# fos_user_security_login && fos_user_security_logout routes are useless for API
+fos_user_security_check:
+  path:     /authenticate
+  defaults: { _controller: FOS\UserBundle\Controller\SecurityController::checkAction }
+  methods: [POST]
+
+gesdinet_jwt_refresh_token:
+  path:     /token/refresh
+  defaults: { _controller: gesdinet.jwtrefreshtoken:refresh }
+  methods: [POST]

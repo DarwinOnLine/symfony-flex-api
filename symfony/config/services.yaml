@@ -1,0 +1,60 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+  locale: fr
+
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    public: false       # Allows optimizing the container by removing unused services; this also means
+                        # fetching services directly from the container via $container->get() won't work.
+                        # The best practice is to be explicit about your dependencies anyway.
+
+  # makes classes in src/ available to be used as services
+  # this creates a service per class whose id is the fully-qualified class name
+  App\:
+    resource: '../src/*'
+    exclude: '../src/{Entity,Migrations,Tests,Utils,Kernel.php}'
+#    exclude: '../src/{Entity,Migrations,Tests,Kernel.php,EventListener,Migrations,Security/ApiKeyUser.php,Security/UserRepository.php}'
+
+  # controllers are imported separately to make sure services can be injected
+  # as action arguments even if you don't extend any base controller class
+  App\Controller\:
+    resource: '../src/Controller'
+    tags: ['controller.service_arguments']
+
+  # add more service definitions when explicit configuration is needed
+  # please note that last definitions always *replace* previous ones
+
+
+  # JWT
+  # JWT AUTHENTICATION_SUCCESS - Success login
+  App\Event\JWT\JWTAuthenticatedListener:
+    arguments: ["%env(JWT_TOKEN_TTL)%", "%locale%"]
+    tags:
+      - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+
+  # JWT Errors
+  App\Event\JWT\JWTFailureListener:
+    tags:
+      - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_failure, method: onAuthenticationFailureResponse }
+      - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_invalid, method: onJWTInvalid }
+      - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_not_found, method: onJWTNotFound }
+      - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_expired, method: onJWTExpired }
+
+  # Exceptions
+  App\Event\ApiExceptionSubscriber:
+    arguments: ["@logger", "%kernel.environment%"]
+    tags:
+      - { name: kernel.event_subscriber }
+
+  # UUID listener
+  App\Event\UuidListener:
+    tags:
+      - { name: doctrine.event_listener, event: prePersist }
+

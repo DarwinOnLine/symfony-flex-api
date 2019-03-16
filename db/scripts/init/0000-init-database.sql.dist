@@ -1,0 +1,55 @@
+-- Model: $DATABASE_NAME   Version: 1.0
+-- Note : Tokens will be replaced on initialization
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema $DATABASE_NAME
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `$DATABASE_NAME` ;
+CREATE SCHEMA IF NOT EXISTS `$DATABASE_NAME` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+
+-- -----------------------------------------------------
+-- Schema $DATABASE_NAME for tests
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `$DATABASE_NAME_tests` ;
+CREATE SCHEMA IF NOT EXISTS `$DATABASE_NAME_tests` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+
+-- -----------------------------------------------------
+-- Dedicated users
+-- -----------------------------------------------------
+CREATE USER 'u_$DATABASE_NAME_adm'@'%' IDENTIFIED BY '$ADM_PASSWORD';
+CREATE USER 'u_$DATABASE_NAME_rw'@'%' IDENTIFIED BY '$USR_PASSWORD';
+CREATE USER 'u_$DATABASE_NAME_tests_rw'@'%' IDENTIFIED BY '$TST_PASSWORD';
+GRANT ALL ON `$DATABASE_NAME`.* TO 'u_$DATABASE_NAME_adm'@'%' WITH GRANT OPTION;
+GRANT ALL ON `$DATABASE_NAME_tests`.* TO 'u_$DATABASE_NAME_adm'@'%' WITH GRANT OPTION;
+GRANT SELECT,INSERT,UPDATE,DELETE ON `$DATABASE_NAME`.* TO 'u_$DATABASE_NAME_rw'@'%';
+GRANT SELECT,INSERT,UPDATE,DELETE,DROP ON `$DATABASE_NAME_tests`.* TO 'u_$DATABASE_NAME_tests_rw'@'%';
+FLUSH PRIVILEGES;
+
+-- -----------------------------------------------------
+-- Ordered UUID Function
+-- -----------------------------------------------------
+DELIMITER //
+DROP FUNCTION IF EXISTS `$DATABASE_NAME`.`ordered_uuid`//
+CREATE FUNCTION `$DATABASE_NAME`.`ordered_uuid`(uuid BINARY(36))
+  RETURNS BINARY(16) DETERMINISTIC
+BEGIN
+  RETURN UNHEX(CONCAT(SUBSTR(uuid, 15, 4),SUBSTR(uuid, 10, 4),SUBSTR(uuid, 1, 8),SUBSTR(uuid, 20, 4),SUBSTR(uuid, 25)));
+END//
+DROP FUNCTION IF EXISTS `$DATABASE_NAME_tests`.`ordered_uuid`//
+CREATE FUNCTION `$DATABASE_NAME_tests`.`ordered_uuid`(uuid BINARY(36))
+  RETURNS BINARY(16) DETERMINISTIC
+BEGIN
+  RETURN UNHEX(CONCAT(SUBSTR(uuid, 15, 4),SUBSTR(uuid, 10, 4),SUBSTR(uuid, 1, 8),SUBSTR(uuid, 20, 4),SUBSTR(uuid, 25)));
+END//
+DELIMITER ;
+
+GRANT EXECUTE ON FUNCTION `$DATABASE_NAME`.`ordered_uuid` TO 'u_$DATABASE_NAME_rw'@'%';
+GRANT EXECUTE ON FUNCTION `$DATABASE_NAME_tests`.`ordered_uuid` TO 'u_$DATABASE_NAME_tests_rw'@'%';
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

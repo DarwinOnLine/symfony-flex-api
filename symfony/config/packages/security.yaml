@@ -1,0 +1,55 @@
+security:
+  # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+  encoders:
+    FOS\UserBundle\Model\UserInterface: argon2i
+
+  providers:
+    fos_userbundle:
+      id: fos_user.user_provider.username_email
+
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    index:
+      pattern: ^/$
+      security: false
+
+    white-list:
+      pattern: ^/(api-doc|reset-password|registration)
+      security: false
+
+    token-refresh:
+      pattern:  ^/token/refresh
+      stateless: true
+      anonymous: true
+
+    authentication:
+      pattern:   ^/authenticate$
+      provider:  fos_userbundle
+      stateless: true
+      anonymous: true
+      form_login:
+        check_path:               fos_user_security_check
+        username_parameter:       username
+        password_parameter:       password
+        success_handler:          lexik_jwt_authentication.handler.authentication_success
+        failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+
+    api:
+      pattern:   ^/
+      provider:  fos_userbundle
+      stateless: true
+      anonymous: true
+      guard:
+        authenticators:
+          - lexik_jwt_authentication.jwt_token_authenticator
+
+  access_control:
+    - { path: ^/$,               roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api-doc,         roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/token/refresh,   roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/authenticate,    roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#    - { path: ^/change-password, access: "allowFirstLogin(1)" }
+#    - { path: ^/,                access: "allowFirstLogin(0)" }

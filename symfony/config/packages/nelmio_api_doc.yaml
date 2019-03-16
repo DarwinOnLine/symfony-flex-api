@@ -1,0 +1,261 @@
+# API documentation
+nelmio_api_doc:
+  areas:
+    path_patterns:
+      - ^\/(?!_).+
+  documentation:
+    schemes: [http, https]
+    info:
+      title: 'Symfony Flex API'
+      description: 'API documentation for Symfony Flex API'
+      version: 1.0.0
+    contact:
+      name: 'Highlight'
+      email: 'matthieu@highlight.pro'
+    license:
+      name: 'Proprietary API'
+      url: 'https://en.wikipedia.org/wiki/Proprietary_software'
+    securityDefinitions:
+      Bearer:
+        type: apiKey
+        description: 'Value: Bearer {jwt}'
+        name: Authorization
+        in: header
+    security:
+      - Bearer: []
+    definitions:
+      # HTTP Responses
+      400:
+        description: 'Bad request'
+        type: object
+        properties:
+          errors:
+            type: array
+            items:
+              $ref: '#/definitions/error'
+      401:
+        description: 'Authentication is required'
+        type: object
+        properties:
+          errors:
+            type: array
+            items:
+              $ref: '#/definitions/error'
+      403:
+        description: 'You are not allowed to access this resource'
+        type: object
+        properties:
+          errors:
+            type: array
+            items:
+              $ref: '#/definitions/error'
+      404:
+        description: 'Resource not found'
+        type: object
+        properties:
+          errors:
+            type: array
+            items:
+              $ref: '#/definitions/error'
+      405:
+        description: 'Method Not Allowed'
+        type: object
+        properties:
+          errors:
+            type: array
+            items:
+              $ref: '#/definitions/error'
+      408:
+        description: 'Request time-out'
+        type: object
+        properties:
+          errors:
+            type: array
+            items:
+              $ref: '#/definitions/error'
+      415:
+        description: 'Unsupported media type'
+        type: object
+        properties:
+          errors:
+            type: array
+            items:
+              $ref: '#/definitions/error'
+      422:
+        description: 'Unprocessable entity'
+        type: object
+        properties:
+          errors:
+            type: array
+            items:
+              $ref: '#/definitions/error'
+      500:
+        description: 'Internal server error'
+        type: object
+        properties:
+          errors:
+            type: array
+            items:
+              $ref: '#/definitions/error'
+      error:
+        description: 'Error messages'
+        type: string
+        example: 'error.dummy.error_key'
+      # Security
+      security_auth_token:
+        description: 'JWT token'
+        type: string
+        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+      security_auth_refresh_token:
+        description: 'Refresh token'
+        type: string
+        example: 'fdb8fdbecf1d03ce5e6125c067733c0d51de209c'
+      security_user:
+        description: 'User with minimal data (Security exchanges)'
+        type: object
+        required: ['fullname','username','profile','firstLogin','locale']
+        properties:
+          firstname:
+            $ref: '#/definitions/user_firstname'
+          lastname:
+            $ref: '#/definitions/user_lastname'
+          username:
+            $ref: '#/definitions/user_username'
+          profile:
+            $ref: '#/definitions/referential_code'
+          first_login:
+            $ref: '#/definitions/user_first_login'
+          locale:
+            $ref: '#/definitions/referential_code'
+      security_auth:
+        description: 'Auth information'
+        type: object
+        required: ['token','refresh_token','user']
+        properties:
+          token:
+            $ref: '#/definitions/security_auth_token'
+          refresh_token:
+            $ref: '#/definitions/security_auth_refresh_token'
+          user:
+            $ref: '#/definitions/security_user'
+      # Common
+      count:
+        description: 'A count'
+        type: integer
+        example: 12
+      entity_count:
+        description: 'Entity count'
+        type: 'object'
+        properties:
+          count:
+            $ref: '#/definitions/count'
+      user_firstname:
+        description: 'User firstname'
+        type: string
+        example: 'Paul'
+      user_lastname:
+        description: 'User lastname'
+        type: string
+        example: 'Hochon'
+      user_username:
+        description: 'User username'
+        type: string
+        example: 'matthieu'
+      referential_code:
+        description: 'Referential code'
+        type: string
+        example: 'SOME_CODE'
+      user_first_login:
+        description: 'User first login?'
+        type: boolean
+        example: true
+    parameters:
+      # Common
+      entity_uuid:
+        name: 'uuid'
+        in: 'path'
+        description: "Entity UUID"
+        required: true
+        type: string
+        example: '17145008-db65-11e8-93a2-0242ac120003'
+      pagination_page:
+        name: 'page'
+        in: 'query'
+        description: 'Pagination : Page number, default is <code>1</code>'
+        required: false
+        type: integer
+        example: 1234
+        minimum: 1
+      pagination_limit:
+        name: 'limit'
+        in: 'query'
+        description: 'Pagination : Item limit number, default is <code>0</code> (all items)'
+        required: false
+        type: integer
+        example: 1234
+        minimum: 0
+      result_sort:
+        name: 'sort'
+        in: 'query'
+        description: 'Result sort. Format <code>property1:desc,property2:asc</code>.<br>You can pass any result field as property'
+        required: false
+        type: string
+        example: property1:desc,property2:asc
+      # Specific
+      # ...
+    # Out of scope paths
+    paths:
+      /authenticate:
+        post:
+          tags: ['Authentication']
+          summary: 'Get a connection token to access API'
+          description: 'This method provides an access token if credentials are valid.'
+          parameters:
+            - name: credentials
+              description: Client public token
+              in: body
+              required: true
+              schema:
+                type: object
+                required: ['username', 'password']
+                properties:
+                  username:
+                    type: string
+                    description: 'Username'
+                    example: 'matthieu'
+                  password:
+                    type: string
+                    description: 'Password'
+                    example: 'secur3P4ssW0rD'
+          responses:
+            200:
+              description: Successful operation
+              schema:
+                $ref: '#/definitions/security_auth'
+            400:
+              schema:
+                $ref: '#/definitions/400'
+            401:
+              schema:
+                $ref: '#/definitions/401'
+            405:
+              schema:
+                $ref: '#/definitions/405'
+      /token/refresh:
+        post:
+          tags: ['Authentication']
+          summary: 'Refresh a JWT token.'
+          description: 'This method provides a refresh token management.'
+          parameters:
+            - name: Refresh token
+              description: Refresh token to refresh
+              in: body
+              required: true
+              schema:
+                type: object
+                required: ['refresh_token']
+                properties:
+                  refresh_token:
+                    type: string
+                    description: 'Refresh token'
+                    example: 'fdb8fdbecf1d03ce5e6125c067733c0d51de209c'

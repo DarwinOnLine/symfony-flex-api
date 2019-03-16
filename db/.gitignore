@@ -1,0 +1,3 @@
+mcd/*.bak
+/.idea/
+scripts/init/0000-init-database.sql

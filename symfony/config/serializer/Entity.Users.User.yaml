@@ -1,0 +1,8 @@
+App\Entity\Users\User:
+  attributes:
+    uuid:
+      groups: [ userEntity, userItem ]
+    username:
+      groups: [ userEntity, userItem ]
+    email:
+      groups: [ userEntity ]

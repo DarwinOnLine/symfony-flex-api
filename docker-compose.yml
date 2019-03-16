@@ -1,0 +1,65 @@
+version: '3.7'
+
+services:
+  db:
+    container_name: ${COMPOSE_PROJECT_NAME}_db
+    image: ${SGBD_TYPE}
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    volumes:
+      - .data:/var/lib/mysql
+      - ./db:/opt/db
+      - .docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - .docker/db/init.sh:/docker-entrypoint-initdb.d/init.sh
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ADM_PASSWORD: ${MYSQL_ADM_PASSWORD}
+      MYSQL_USR_PASSWORD: ${MYSQL_USR_PASSWORD}
+      MYSQL_TST_PASSWORD: ${MYSQL_TST_PASSWORD}
+    ports:
+      - 3306:3306
+
+  php:
+    container_name: ${COMPOSE_PROJECT_NAME}_php
+    build:
+      context: .docker/php-fpm
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+        TIMEZONE: ${TIMEZONE}
+    volumes:
+      - ./symfony:/srv/symfony:cached
+      - ./logs/symfony:/srv/symfony/var/log:cached
+    links:
+      - db
+    extra_hosts:
+      - "docker-host.localhost:${HOST_IP}"
+    expose:
+      - 9000
+
+  nginx:
+    container_name: ${COMPOSE_PROJECT_NAME}_nginx
+    build: .docker/nginx
+    ports:
+      - 80:80
+    links:
+      - php
+    volumes:
+      - ./logs/nginx/:/var/log/nginx:cached
+      - ./symfony:/srv/symfony:cached
+
+  elk:
+    container_name: ${COMPOSE_PROJECT_NAME}_elk
+    image: willdurand/elk
+    ports:
+      - 82:80
+    volumes:
+      - .docker/elk/logstash:/etc/logstash:cached
+      - .docker/elk/logstash/patterns:/opt/logstash/patterns:cached
+      - ./logs/symfony:/srv/symfony/var/log:cached
+      - ./logs/nginx:/var/log/nginx:cached
+
+  phpmyadmin:
+    container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 83:80

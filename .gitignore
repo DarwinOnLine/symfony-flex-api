@@ -1,0 +1,6 @@
+/docker-compose.override.yaml
+/docker-compose.override.yml
+/logs
+/.data
+/.env
+/.idea

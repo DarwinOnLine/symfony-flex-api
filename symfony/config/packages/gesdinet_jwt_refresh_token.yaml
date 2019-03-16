@@ -1,0 +1,5 @@
+gesdinet_jwt_refresh_token:
+  firewall: token-refresh
+  user_provider: fos_user.user_provider.username_email
+  ttl: '%env(int:JWT_REFRESH_TOKEN_TTL)%'
+  ttl_update: true
