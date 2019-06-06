@@ -11,80 +11,73 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ApiProblem
 {
-    const PREFIX = 'error.';
-    const WARNING = 'warning.';
+    public const PREFIX = 'error.';
+    public const WARNING = 'warning.';
 
     // region Error constants
 
-    const UNEXPECTED_ERROR = 'something.went.wrong';
-    const FORM_EXTRA_FIELDS_ERROR = 'form.extra_fields';
+    public const UNEXPECTED_ERROR = 'something.went.wrong';
+    public const FORM_EXTRA_FIELDS_ERROR = 'form.extra_fields';
 
-    const INVALID_FORMAT = 'invalid.format.message';
-    const INVALID_DATA_SUBMITTED = 'invalid.data.submitted';
-    const ROUTE_NOT_FOUND = 'route.not_found';
-    const ENTITY_NOT_FOUND = '%s.not_found';
-    const ENTITY_NOT_ACCESSIBLE = '%s.not_accessible';
+    public const INVALID_FORMAT = 'invalid.format.message';
+    public const INVALID_DATA_SUBMITTED = 'invalid.data.submitted';
+    public const ROUTE_NOT_FOUND = 'route.not_found';
+    public const ENTITY_NOT_FOUND = '%s.not_found';
+    public const ENTITY_NOT_ACCESSIBLE = '%s.not_accessible';
 
-    const UPLOAD_UNABLE_TO_WRITE_DIRECTORY = 'upload.unable.to.write.directory';
-    const UNABLE_TO_CREATE_ZIP_FILE = 'unable.to.create.zip_file';
+    public const UPLOAD_UNABLE_TO_WRITE_DIRECTORY = 'upload.unable.to.write.directory';
+    public const UNABLE_TO_CREATE_ZIP_FILE = 'unable.to.create.zip_file';
 
-    const RESULT_ORDER_INCORRECT = 'order.incorrect_order';
-    const RESULT_SORT_MALFORMED = 'sort.malformed';
+    public const RESULT_ORDER_INCORRECT = 'order.incorrect_order';
+    public const RESULT_SORT_MALFORMED = 'sort.malformed';
 
-    const PAGINATION_INCORRECT_PAGE_VALUE = 'pagination.incorrect_page_value';
-    const PAGINATION_INCORRECT_RESULT_PER_PAGE_VALUE = 'pagination.incorrect_results_per_page_value';
+    public const PAGINATION_INCORRECT_PAGE_VALUE = 'pagination.incorrect_page_value';
+    public const PAGINATION_INCORRECT_RESULT_PER_PAGE_VALUE = 'pagination.incorrect_results_per_page_value';
 
-    const MISSING_FIELD_REQUIRED = '%s.required';
+    public const MISSING_FIELD_REQUIRED = '%s.required';
 
     // region Entities
 
-    const ENTITY_DUPLICATED = '%s.duplicated';
-    const ENTITY_NOT_EDITABLE = '%s.not_editable';
-    const ENTITY_NOT_DELETABLE = '%s.not_deletable';
+    public const ENTITY_DUPLICATED = '%s.duplicated';
+    public const ENTITY_NOT_EDITABLE = '%s.not_editable';
+    public const ENTITY_NOT_DELETABLE = '%s.not_deletable';
 
-    const ENTITY_FIELD_REQUIRED = '%s.%s.required';
-    const ENTITY_FIELD_AT_LEAST_REQUIRED = '%s.%s_or_%s.required';
-    const ENTITY_FIELD_MIN_VALUE = '%s.%s.min_value';
-    const ENTITY_FIELD_TOO_SHORT = '%s.%s.too_short';
-    const ENTITY_FIELD_TOO_LONG = '%s.%s.too_long';
-    const ENTITY_FIELD_TOO_MUCH = '%s.%s.too_much';
-    const ENTITY_FIELD_UNIQUE = '%s.%s.unique';
-    const ENTITY_FIELD_INVALID = '%s.%s.invalid';
-    const ENTITY_FIELD_DIFFERENT = '%s.%s.different';
-    const ENTITY_FIELD_XOR = '%s.%s_xor_%s';
+    public const ENTITY_FIELD_REQUIRED = '%s.%s.required';
+    public const ENTITY_FIELD_AT_LEAST_REQUIRED = '%s.%s_or_%s.required';
+    public const ENTITY_FIELD_MIN_VALUE = '%s.%s.min_value';
+    public const ENTITY_FIELD_TOO_SHORT = '%s.%s.too_short';
+    public const ENTITY_FIELD_TOO_LONG = '%s.%s.too_long';
+    public const ENTITY_FIELD_TOO_MUCH = '%s.%s.too_much';
+    public const ENTITY_FIELD_UNIQUE = '%s.%s.unique';
+    public const ENTITY_FIELD_INVALID = '%s.%s.invalid';
+    public const ENTITY_FIELD_DIFFERENT = '%s.%s.different';
+    public const ENTITY_FIELD_XOR = '%s.%s_xor_%s';
 
-    const ENTITY_NOT_IN_YOUR_SCOPE = '%s.not_in_your_scope';
+    public const ENTITY_NOT_IN_YOUR_SCOPE = '%s.not_in_your_scope';
 
     // endregion
 
     // region Password
 
-    const PASSWORD_NEW_VALUE_MUST_BE_DIFFERENT = 'password.new_value_must_be_different';
-    const PASSWORD_TOO_SHORT = 'password.too_short';
-    const PASSWORD_SPACES_NOT_ALLOWED = 'password.spaces_not_allowed';
-    const PASSWORD_MISSING_LETTERS = 'password.missing_letters';
-    const PASSWORD_REQUIRE_CASE_DIFF = 'password.require_case_diff';
-    const PASSWORD_MISSING_NUMBERS = 'password.missing_numbers';
-    const PASSWORD_MISSING_SPECIAL_CHARS = 'password.missing_special_chars';
-    const PASSWORD_MAX_CHAR_OCCURRENCES = 'password.max_char_occurrences';
-
-    // endregion
-
-    // region Workflow
-
-    const ENTITY_WORKFLOW_STATE_NOT_FOUND = 'workflow.state_not_found';
-    const ENTITY_WORKFLOW_TRANSITION_NOT_APPLICABLE = '%s.workflow.transition_not_applicable';
+    public const PASSWORD_NEW_VALUE_MUST_BE_DIFFERENT = 'password.new_value_must_be_different';
+    public const PASSWORD_TOO_SHORT = 'password.too_short';
+    public const PASSWORD_SPACES_NOT_ALLOWED = 'password.spaces_not_allowed';
+    public const PASSWORD_MISSING_LETTERS = 'password.missing_letters';
+    public const PASSWORD_REQUIRE_CASE_DIFF = 'password.require_case_diff';
+    public const PASSWORD_MISSING_NUMBERS = 'password.missing_numbers';
+    public const PASSWORD_MISSING_SPECIAL_CHARS = 'password.missing_special_chars';
+    public const PASSWORD_MAX_CHAR_OCCURRENCES = 'password.max_char_occurrences';
 
     // endregion
 
     // region JWT
 
-    const AUTHENTICATION_FAILURE = 'bad_credentials';
-    const RESTRICTED_ACCESS = 'restricted_access';
-    const CHANGE_PASSWORD_REQUIRED = 'change_password_required';
-    const JWT_INVALID = 'invalid_token';
-    const JWT_NOT_FOUND = 'missing_token';
-    const JWT_EXPIRED = 'token_expired';
+    public const AUTHENTICATION_FAILURE = 'bad_credentials';
+    public const RESTRICTED_ACCESS = 'restricted_access';
+    public const CHANGE_PASSWORD_REQUIRED = 'change_password_required';
+    public const JWT_INVALID = 'invalid_token';
+    public const JWT_NOT_FOUND = 'missing_token';
+    public const JWT_EXPIRED = 'token_expired';
 
     // endregion
 
@@ -133,7 +126,7 @@ class ApiProblem
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return array_merge(
             $this->extraData,
@@ -149,7 +142,7 @@ class ApiProblem
      * @param $name
      * @param $value
      */
-    public function set($name, $value)
+    public function set($name, $value): void
     {
         $this->extraData[$name] = $value;
     }
@@ -157,7 +150,7 @@ class ApiProblem
     /**
      * @return int
      */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
@@ -165,7 +158,7 @@ class ApiProblem
     /**
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -176,10 +169,8 @@ class ApiProblem
      * @param int   $statusCode
      * @param array $errors
      * @param bool  $prefix
-     *
-     * @return string
      */
-    private function normalizeErrors(int $statusCode, array $errors, bool $prefix)
+    private function normalizeErrors(int $statusCode, array $errors, bool $prefix): void
     {
         foreach ($errors as $error) {
             $this->errors[] = $this->normalizeError($statusCode, $error, $prefix);
@@ -195,7 +186,7 @@ class ApiProblem
      *
      * @return string
      */
-    private function normalizeError(int $statusCode, string $type, bool $prefix)
+    private function normalizeError(int $statusCode, string $type, bool $prefix): string
     {
         // 400
         if (Response::HTTP_BAD_REQUEST === $statusCode) {
@@ -210,7 +201,7 @@ class ApiProblem
             // 403
         } elseif (Response::HTTP_FORBIDDEN === $statusCode) {
             if (preg_match('#^Token does not have the required roles#', $type)
-             || preg_match('#^Access Denied.$#', $type)) {
+                || preg_match('#^Access Denied.$#', $type)) {
                 $type = self::RESTRICTED_ACCESS;
             }
             // 404
@@ -220,7 +211,7 @@ class ApiProblem
                 $type = mb_strtolower(
                     sprintf(self::ENTITY_NOT_FOUND, ApiTools::normalizeClassName($matches[2]))
                 );
-            // Unknown route or resource
+                // Unknown route or resource
             } elseif (preg_match('#^No route found for#', $type)) {
                 $type = self::ROUTE_NOT_FOUND;
             }

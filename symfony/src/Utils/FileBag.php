@@ -18,11 +18,11 @@ class FileBag
      * @param null   $fileName   The filename to the file
      * @param array  $headers    Additional headers
      */
-    public function addFile(string $fieldName, string $contents, bool $asResource = true, $fileName = null, $headers = [])
+    public function addFile(string $fieldName, string $contents, bool $asResource = true, $fileName = null, $headers = []): void
     {
         $file = [
             'name' => $fieldName,
-            'contents' => ($asResource ? fopen($contents, 'r') : $contents),
+            'contents' => $asResource ? fopen($contents, 'rb') : $contents,
         ];
         if (null !== $fileName) {
             $file['filename'] = $fileName;
@@ -38,7 +38,7 @@ class FileBag
      *
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }

@@ -1,6 +1,8 @@
 <?php
 
-namespace Tests;
+namespace App\Tests;
+
+use UnexpectedValueException;
 
 abstract class ApiColorize
 {
@@ -8,31 +10,31 @@ abstract class ApiColorize
      * Color constants
      */
     /* FOREGROUNDS */
-    const F_BLACK = 'black';
-    const F_DARK_GRAY = 'dark_gray';
-    const F_BLUE = 'blue';
-    const F_LIGHT_BLUE = 'light_blue';
-    const F_GREEN = 'green';
-    const F_LIGHT_GREEN = 'light_green';
-    const F_CYAN = 'cyan';
-    const F_LIGHT_CYAN = 'light_cyan';
-    const F_RED = 'red';
-    const F_LIGHT_RED = 'light_red';
-    const F_PURPLE = 'purple';
-    const F_LIGHT_PURPLE = 'light_purple';
-    const F_BROWN = 'brown';
-    const F_YELLOW = 'yellow';
-    const F_LIGHT_GRAY = 'light_gray';
-    const F_WHITE = 'white';
+    public const F_BLACK = 'black';
+    public const F_DARK_GRAY = 'dark_gray';
+    public const F_BLUE = 'blue';
+    public const F_LIGHT_BLUE = 'light_blue';
+    public const F_GREEN = 'green';
+    public const F_LIGHT_GREEN = 'light_green';
+    public const F_CYAN = 'cyan';
+    public const F_LIGHT_CYAN = 'light_cyan';
+    public const F_RED = 'red';
+    public const F_LIGHT_RED = 'light_red';
+    public const F_PURPLE = 'purple';
+    public const F_LIGHT_PURPLE = 'light_purple';
+    public const F_BROWN = 'brown';
+    public const F_YELLOW = 'yellow';
+    public const F_LIGHT_GRAY = 'light_gray';
+    public const F_WHITE = 'white';
     /* BACKGROUNDS */
-    const B_BLACK = 'black';
-    const B_RED = 'red';
-    const B_GREEN = 'green';
-    const B_YELLOW = 'yellow';
-    const B_BLUE = 'blue';
-    const B_MAGENTA = 'magenta';
-    const B_CYAN = 'cyan';
-    const B_LIGHT_GRAY = 'light_gray';
+    public const B_BLACK = 'black';
+    public const B_RED = 'red';
+    public const B_GREEN = 'green';
+    public const B_YELLOW = 'yellow';
+    public const B_BLUE = 'blue';
+    public const B_MAGENTA = 'magenta';
+    public const B_CYAN = 'cyan';
+    public const B_LIGHT_GRAY = 'light_gray';
 
     /**
      * Foreground color codes.
@@ -81,13 +83,13 @@ abstract class ApiColorize
      *
      * @return string The colored string
      */
-    public static function colorize(string $string, string $foreground = null, string $background = null)
+    public static function colorize(string $string, string $foreground = null, string $background = null): string
     {
         if (null !== $foreground && !isset(self::$foregroundColors[$foreground])) {
-            throw new \UnexpectedValueException(sprintf('ApiColorize : The foreground "%s" color does not exist.', $foreground));
+            throw new UnexpectedValueException(sprintf('ApiColorize : The foreground "%s" color does not exist.', $foreground));
         }
         if (null !== $background && !isset(self::$backgroundColors[$background])) {
-            throw new \UnexpectedValueException(sprintf('ApiColorize : The background "%s" color does not exist.', $background));
+            throw new UnexpectedValueException(sprintf('ApiColorize : The background "%s" color does not exist.', $background));
         }
 
         return sprintf(

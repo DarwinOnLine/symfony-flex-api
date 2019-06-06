@@ -15,7 +15,7 @@ abstract class ApiTools
      *
      * @return string
      */
-    public static function normalizeClassName(string $className)
+    public static function normalizeClassName(string $className): string
     {
         preg_match_all('#([A-Z\\\][A-Z0-9\\\]*(?=$|[A-Z\\\][a-z0-9\\\])|[A-Za-z\\\][a-z0-9\\\]+)#', $className, $matches);
         $ret = $matches[0];
@@ -33,7 +33,7 @@ abstract class ApiTools
      *
      * @return string
      */
-    public static function normalizeEntityClassName(string $entityClassName)
+    public static function normalizeEntityClassName(string $entityClassName): string
     {
         return self::normalizeClassName(
             mb_substr($entityClassName, mb_strpos($entityClassName, 'Entity') + mb_strlen('Entity') + 1)

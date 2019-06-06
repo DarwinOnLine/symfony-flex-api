@@ -9,8 +9,8 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 abstract class ApiFormat
 {
-    const JSON = 'application/json';
-    const XML = 'application/xml';
+    public const JSON = 'application/json';
+    public const XML = 'application/xml';
 
     /**
      * @var array

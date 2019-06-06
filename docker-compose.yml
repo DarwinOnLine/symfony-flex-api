@@ -26,6 +26,8 @@ services:
       args:
         PHP_VERSION: ${PHP_VERSION}
         TIMEZONE: ${TIMEZONE}
+    env_file:
+      - ./symfony/.env.local
     volumes:
       - ./symfony:/srv/symfony:cached
       - ./logs/symfony:/srv/symfony/var/log:cached
