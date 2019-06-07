@@ -19,16 +19,16 @@
         <env name="BOOTSTRAP_CLEAR_CACHE_ENV" value="test" />
 
         <!-- ###+ symfony/framework-bundle ### -->
-        <env name="APP_ENV" value="test"/>
+        <env name="APP_ENV" value="test" force="true" />
         <env name="APP_DEBUG" value="0" />
-        <env name="APP_SECRET" value="93b60d4136baea83cf3821ee6a0a2adb"/>
-        <env name="DATABASE_URL" value="mysql://db_user:db_password@127.0.0.1:3306/db_name"/>
+        <env name="APP_SECRET" value="93b60d4136baea83cf3821ee6a0a2adb" force="true" />
+        <env name="DATABASE_URL" value="mysql://db_user:db_password@127.0.0.1:3306/db_name" force="true" />
         <!-- ###- symfony/framework-bundle ### -->
         <!-- ###+ lexik/jwt-authentication-bundle ### -->
         <env name="JWT_SECRET_KEY" value="%kernel.project_dir%/config/jwt/private.pem" />
         <env name="JWT_PUBLIC_KEY" value="%kernel.project_dir%/config/jwt/public.pem" />
         <env name="JWT_TOKEN_AUTHORIZATION_HEADER_PREFIX" value="Bearer" />
-        <env name="JWT_PASSPHRASE" value="ChangeMe" />
+        <env name="JWT_PASSPHRASE" value="ChangeMe" force="true" />
         <env name="JWT_TOKEN_TTL" value="1800" />
         <env name="JWT_REFRESH_TOKEN_TTL" value="43200" />
         <!-- ###- lexik/jwt-authentication-bundle ### -->
